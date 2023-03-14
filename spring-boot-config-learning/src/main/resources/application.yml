@@ -1,0 +1,17 @@
+#server:
+#  port: 8081
+
+person:
+  id: 1
+  name: zs
+  hobby: g,a,v
+  family: father,mother
+  map:
+    k1: v1
+    k2: v2
+
+student:
+  name: ls
+spring:
+  profiles:
+    active: test
