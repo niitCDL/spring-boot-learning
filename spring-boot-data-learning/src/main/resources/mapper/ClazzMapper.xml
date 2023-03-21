@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ClazzMapper">
+
+    <resultMap id="clazzMap" type="Clazz">
+        <id column="clazz_id" property="clazzId"/>
+        <result column="clazz_name" property="clazzName"/>
+        <association property="teacher" javaType="Teacher">
+            <id column="teacher_id" property="teacherId"/>
+            <result column="teacher_name" property="teacherName"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="clazzAndStudentMap" type="Clazz">
+        <id column="clazz_id" property="clazzId"/>
+        <result column="clazz_name" property="clazzName"/>
+        <collection property="students" ofType="Student">
+            <id column="student_id" property="studentId"/>
+            <result column="student_name" property="studentName"/>
+            <result column="birthday" property="birthday"/>
+            <result column="hometown" property="hometown"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectOneByOne" resultMap="clazzMap" parameterType="int">
+        SELECT *
+        FROM t_teacher t,
+             t_clazz c
+        where t.teacher_id = #{clazzId}
+          and t.clazz_id = c.clazz_id
+    </select>
+    <select id="selectOnetoMany" parameterType="int" resultMap="clazzAndStudentMap">
+        select c.clazz_id, c.clazz_name, s.student_id, s.student_name, s.birthday, s.hometown
+        from t_clazz c,
+             t_student s
+        where c.clazz_id = #{clazzId}
+          and s.clazz_id = c.clazz_id
+    </select>
+
+
+    <update id="updateById">
+        update t_clazz
+        <set>
+            <if test="clazz.clazzName != null">
+                clazz_name = #{clazz.clazzName},
+            </if>
+            <if test="clazz.teacherId != null">
+                teacher_id = #{clazz.teacherId},
+            </if>
+        </set>
+        where clazz_id = #{clazz.clazzId}
+    </update>
+
+    <insert id="batchInsert">
+        insert into t_clazz values
+        <foreach collection="clazzList" item="clazz" separator=",">
+            (#{clazz.clazzId},#{clazz.clazzName},#{clazz.teacherId})
+        </foreach>
+    </insert>
+    <delete id="batchDelete">
+        delete from t_clazz where clazz_id in
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="batchUpdate">
+        <foreach collection="clazzList" item="clazz" separator=";">
+            update t_clazz
+            <set>
+                <if test="clazz.clazzName != null">
+                    clazz_name = #{clazz.clazzName},
+                </if>
+                <if test="clazz.teacherId != null">
+                    teacher_id = #{clazz.teacherId},
+                </if>
+            </set>
+            where clazz_id = #{clazz.clazzId}
+        </foreach>
+    </update>
+</mapper>

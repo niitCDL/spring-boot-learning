@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TeacherMapper">
+
+    <resultMap id="teacherMap" type="Teacher">
+        <id column="teacher_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <association property="clazz" javaType="Clazz">
+            <id column="clazz_id" property="clazzId"/>
+            <result column="clazz_name" property="clazzName"/>
+        </association>
+    </resultMap>
+
+
+    <select id="selectOneByOne" resultMap="teacherMap" parameterType="int">
+        SELECT t.*, c.*
+        FROM t_teacher t,
+             t_clazz c
+        where t.teacher_id = #{teacherId}
+          and t.clazz_id = c.clazz_id
+    </select>
+
+    <update id="updateById">
+        update t_teacher
+        <set>
+            <if test="teacher.clazzId != null">
+                clazz_id = #{teacher.clazzId},
+            </if>
+            <if test="teacher.teacherName != null">
+                teacher_name = #{teacher.teacherName},
+            </if>
+        </set>
+        where teacher_id = #{teacher.teacherId};
+    </update>
+
+    <update id="batchUpdate">
+        <foreach collection="teacherList" item="teacher" separator=";">
+            update t_teacher
+            <set>
+                <if test="teacher.clazzId != null">
+                    clazz_id = #{teacher.clazzId},
+                </if>
+                <if test="teacher.teacherName != null">
+                    teacher_name = #{teacher.teacherName},
+                </if>
+            </set>
+            where teacher_id = #{teacher.teacherId}
+        </foreach>
+    </update>
+
+    <insert id="batchInsert" parameterType="Teacher">
+        insert into t_teacher values
+        <foreach collection="teacherList" item="teacher" separator=",">
+            (#{teacher.teacherId}, #{teacher.teacherName}, #{teacher.clazzId})
+        </foreach>
+    </insert>
+
+    <delete id="batchDelete">
+        delete from t_teacher where teacher_id in
+        <foreach collection="idList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
