@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .book_cover{
+        display: inline-block;
+        width: 500px;
+        height: 500px;
+        margin-right: 50px;
+    }
+    img{
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+    .container{
+        margin-top: 100px;
+        margin-left: 464px;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:each="item : ${articleList}" class="book_cover">
+        <div style="padding-left: 20px">
+            <h1 th:text="${item.getTitle()}"></h1>
+            <br>
+            详细内容: [[${item.getContent()}]]
+        </div>
+        <a th:href="'book/detail/'+${item.getId()}+''">
+            <img th:src="${item.getCover()}">
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
