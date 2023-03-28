@@ -14,4 +14,10 @@ public class TestController {
     public String show(){
         return dbConfig.configure();
     }
+
+
+    @GetMapping("/login2")
+    public void login2(){
+        System.out.println("login2");
+    }
 }
