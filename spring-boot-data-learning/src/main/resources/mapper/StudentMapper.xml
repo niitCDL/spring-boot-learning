@@ -60,7 +60,7 @@
     </select>
 
 
-    <select id="dynamicSelect" resultType="com.example.domain.Student">
+    <select id="dynamicSelect" resultType="com.task.domain.Student">
         select *
         from t_student
         <where>

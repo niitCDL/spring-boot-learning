@@ -7,6 +7,15 @@
         <module>spring-boot-data-learning</module>
         <module>spring-boot-filter-interceptor</module>
         <module>spring-boot-global-exception-learning</module>
+        <module>spring-security-learning</module>
+        <module>spring-boot-task-learning</module>
+        <module>spring-boot-file-learning</module>
+        <module>spring-boot-cache-learning</module>
+        <module>spring-boot-server-push</module>
+        <module>spring-boot-mail-learning</module>
+        <module>spring-boot-actuator-learning</module>
+        <module>spring-boot-admin-server</module>
+        <module>spring-boot-docs-learning</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

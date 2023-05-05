@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket-demo</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <input type="text" placeholder="请输入id" v-model="id">
+        <button @click="open">连接 websocket</button>
+    </div>
+    <div>
+        <input type="text" placeholder="请输入消息" v-model="content">
+        <button @click="send">发送消息</button>
+    </div>
+    <div>
+        <button @click="close">关闭socket连接</button>
+    </div>
+    <div>
+        <p v-html="message">
+
+        </p>
+    </div>
+</div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                id: '1',
+                message: 'hello websocket',
+                content: '默认消息',
+                ws: null
+            }
+        },
+        methods: {
+            open() {
+                ws = new WebSocket(`ws://localhost:8080/socket/${this.id}`)
+                ws.onopen = () => {
+                    console.log("webSocket 连接成功");
+                }
+                ws.onclose = () => {
+                    console.log("webSocket 已经关闭");
+                }
+                ws.onerror = () => {
+                    console.log("webSocket 出现异常");
+                }
+                ws.onmessage = (res) => {
+                    console.log(res)
+                    this.message = this.message.concat("<br/>" + res.data)
+                }
+            },
+            send() {
+                console.log("send");
+                ws.send(this.content);
+                this.content = '';
+            },
+            close(){
+                ws.close();
+            }
+        }
+    });
+    app.mount("#app");
+</script>
+</html>

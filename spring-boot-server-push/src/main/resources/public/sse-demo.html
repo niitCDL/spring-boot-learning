@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sse-demo</title>
+    <style>
+        .msg-box{
+            margin: 20vh auto;
+            width: 400px;
+            line-height: 24px;
+            border: 1px solid lightgray;
+            box-shadow: 3px 3px lightgray;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="msg-box" id="msgBox">
+    接收服务端推送消息
+</div>
+
+<script>
+    //连接 sse
+    if(!! window.EventSource){
+        let source = new EventSource("http://localhost:8080/sse/msg");
+        let msg = '';
+        // 打开连接
+        source.addEventListener('open',()=>{
+            console.log('打开连接...');
+        },false);
+        // 接收消息
+        source.addEventListener('message',(e)=>{
+            document.getElementById("msgBox").innerHTML =  document.getElementById("msgBox").innerHTML + '<br/>' + e.data;
+            console.log(e.data);
+            console.log(JSON.stringify(e));
+        })
+        // 错误
+        source.addEventListener('error',(e)=>{
+            console.log(e);
+        })
+    }else {
+        alert("当前浏览器不支持sse")
+    }
+</script>
+</body>
+</html>

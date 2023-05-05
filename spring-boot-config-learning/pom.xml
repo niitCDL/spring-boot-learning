@@ -49,7 +49,7 @@
                 <configuration>
                     <!-- 如果没有该配置，devtools不会生效 -->
                     <!-- 指定该类为全局的唯一入口 -->
-                    <mainClass>com.example.Application</mainClass>
+                    <mainClass>com.task.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
